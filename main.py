@@ -22,15 +22,39 @@ drill_area = 0
 blast_bcm = 0
 score = 0
 
+# game_attributes
+game_attributes = {
+    'drill': {
+        'fleet': 1,
+        'mod': 5,
+        'value': 5,
+        'mod_incr': 5,
+        'speed': 10
+    },
+    'blast': {
+        'fleet': 1,
+        'mod': 20,
+        'value': 20,
+        'mod_incr': 20,
+        'speed': 5
+    },
+    'dig': {
+        'fleet': 1,
+        'mod': 100,
+        'value': 100,
+        'mod_incr': 100,
+        'speed': 2
+    },
+    'dump': {
+        'fleet': 1,
+        'mod': 100,
+        'value': 100,
+        'mod_incr': 100,
+        'speed': 1
+    }
+}
+
 # game variables
-drill_value = 5
-blast_value = 5
-dig_value = 100
-dump_value = 100
-drill_min = 1
-blast_min = 10
-dig_min = 100
-dump_min = 1000
 draw_drill = False
 draw_blast = False
 draw_dig = False
@@ -39,10 +63,6 @@ drill_length = 0
 blast_length = 0
 dig_length = 0
 dump_length = 0
-drill_speed = 10
-blast_speed = 10
-dig_speed = 10
-dump_speed = 10
 
 # game data
 pages = ['production', 'processing', 'maintenance']
@@ -60,6 +80,9 @@ for filename in image_filenames:
     image = pygame.transform.scale(image, (45, 45))
     image_dict[filename] = image
 
+# Background
+background_image = pygame.image.load('Assets\\background\\00016-218459808.png').convert()
+
 # draw function for status items
 def draw_status(item, value):
     pass
@@ -67,7 +90,6 @@ def draw_status(item, value):
 # draw function for progress items
 def draw_task(color, y_coord, task_image, draw, length, speed, global_variable, value):
     max_length = 380
-
   
     if draw and length < max_length:
         length += speed
@@ -79,12 +101,13 @@ def draw_task(color, y_coord, task_image, draw, length, speed, global_variable, 
           drill_area += value
         elif global_variable == blast_bcm:
           blast_bcm += value
+          drill_area -= value
           
 
     task = pygame.draw.rect(screen, color, (25, y_coord, 50, 50)) # button
     screen.blit(task_image, (27.5, y_coord + 2.5, 45, 45)) # image
     pygame.draw.rect(screen, color, (100, y_coord, 400, 50)) # loading bar
-    pygame.draw.rect(screen, black, (110, y_coord + 10, 380, 30)) # loading bar
+    pygame.draw.rect(screen, navy, (110, y_coord + 10, 380, 30)) # loading bar
     pygame.draw.rect(screen, orange, (110, y_coord + 10, length, 30))# loading bar progress
     return task, length, draw
 
@@ -111,17 +134,12 @@ while running:
             if task_dump.collidepoint(event.pos):
                 draw_dump = True
 
-    screen.fill(background)
+    screen.blit(background_image, (0, 0))
 
-    # page = pages[0]
-    # # draw page items
-    # if page == pages[0]:
-    #     items = items_production
-    #     for item in items:      
-    task_drill, drill_length, draw_drill = draw_task(sage, 100, drill_image, draw_drill, drill_length, drill_speed, drill_area, drill_value)
-    task_blast, blast_length, draw_blast = draw_task(sage, 175, blast_image, draw_blast, blast_length, blast_speed, blast_bcm, blast_value)
-    task_dig, dig_length, draw_dig = draw_task(sage, 250, digger_image, draw_dig, dig_length, dig_speed, None, None)
-    task_dump, dump_length, draw_dump = draw_task(sage, 325, dump_image, draw_dump, dump_length, dump_speed, None, None)
+    task_drill, drill_length, draw_drill = draw_task(sage, 100, drill_image, draw_drill, drill_length, game_attributes['drill']['speed'], drill_area, game_attributes['drill']['value'])
+    task_blast, blast_length, draw_blast = draw_task(sage, 175, blast_image, draw_blast, blast_length, game_attributes['blast']['speed'], blast_bcm, game_attributes['blast']['value'])
+    task_dig, dig_length, draw_dig = draw_task(sage, 250, digger_image, draw_dig, dig_length, game_attributes['dig']['speed'], None, None)
+    task_dump, dump_length, draw_dump = draw_task(sage, 325, dump_image, draw_dump, dump_length, game_attributes['dump']['speed'], None, None)
 
     score_drill_area = font.render('Drill area: '+str(round(drill_area, 0)), True, white, navy)
     screen.blit(score_drill_area, (10, 5))
