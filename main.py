@@ -29,28 +29,36 @@ game_attributes = {
         'mod': 5,
         'value': 5,
         'mod_incr': 5,
-        'speed': 10
+        'speed': 10,
+        'level': 1,
+        'level_cap': 10
     },
     'blast': {
         'fleet': 1,
         'mod': 20,
         'value': 20,
         'mod_incr': 20,
-        'speed': 5
+        'speed': 5,
+        'level': 1,
+        'level_cap': 10
     },
     'dig': {
         'fleet': 1,
         'mod': 100,
         'value': 100,
         'mod_incr': 100,
-        'speed': 2
+        'speed': 2,
+        'level': 1,
+        'level_cap': 10
     },
     'dump': {
         'fleet': 1,
         'mod': 100,
         'value': 100,
         'mod_incr': 100,
-        'speed': 1
+        'speed': 1,
+        'level': 1,
+        'level_cap': 10
     }
 }
 

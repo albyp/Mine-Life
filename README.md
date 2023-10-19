@@ -1,12 +1,15 @@
 # Mine Life
 
-# Installation
-
 # Devlopment
 ## Todo
-- Wiki
-- Requirements
+### Short-term
+- Clean / seperate code into functions
+- Requirements / install process
 - Everything...
+### Medium-term
+- Save game state
+- Offline mode (data persistence)?
+- Wiki
 
 # Wiki
 
