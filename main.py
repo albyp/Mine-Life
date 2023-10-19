@@ -20,7 +20,7 @@ timer = pygame.time.Clock()
 # game state
 drill_area = 0
 blast_bcm = 0
-score = 0
+money = 0
 
 # game_attributes
 game_attributes = {
@@ -104,12 +104,13 @@ def draw_task(color, y_coord, task_image, draw, length, speed, global_variable, 
           drill_area -= value
           
 
-    task = pygame.draw.rect(screen, color, (25, y_coord, 50, 50)) # button
+    task_active= pygame.draw.rect(screen, color, (25, y_coord, 50, 50)) # button
     screen.blit(task_image, (27.5, y_coord + 2.5, 45, 45)) # image
     pygame.draw.rect(screen, color, (100, y_coord, 400, 50)) # loading bar
     pygame.draw.rect(screen, navy, (110, y_coord + 10, 380, 30)) # loading bar
     pygame.draw.rect(screen, orange, (110, y_coord + 10, length, 30))# loading bar progress
-    return task, length, draw
+    pygame.draw.rect(screen, color, (525, y_coord, 50, 50)) # increase button
+    return task_active, length, draw
 
 drill_image = image_dict['drill.png']
 blast_image = image_dict['blast.png']
