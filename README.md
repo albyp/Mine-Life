@@ -10,3 +10,6 @@
 - Everything...
 
 # Wiki
+
+# Credits
+Image assets from Flaticon
