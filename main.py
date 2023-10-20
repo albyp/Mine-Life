@@ -1,5 +1,6 @@
 import os
 import pygame
+import math
 
 pygame.init()
 
@@ -112,12 +113,37 @@ def draw_task(color, y_coord, task_image, draw, length, speed, global_variable, 
           drill_area -= value
           
 
-    task_active= pygame.draw.rect(screen, color, (25, y_coord, 50, 50)) # button
+    task_active = pygame.draw.rect(screen, color, (25, y_coord, 50, 50)) # action button
     screen.blit(task_image, (27.5, y_coord + 2.5, 45, 45)) # image
     pygame.draw.rect(screen, color, (100, y_coord, 400, 50)) # loading bar
     pygame.draw.rect(screen, navy, (110, y_coord + 10, 380, 30)) # loading bar
     pygame.draw.rect(screen, orange, (110, y_coord + 10, length, 30))# loading bar progress
     pygame.draw.rect(screen, color, (525, y_coord, 50, 50)) # increase button
+    return task_active, length, draw
+
+# draw function for task = blast
+def draw_task_blast(y_coord, task_image, draw, length, fleet, mod, speed, value):
+    max_length = 380
+
+    global drill_area, blast_bcm
+
+    action_sum = math.floor(game_attributes['blast']['mod'])
+
+    blast_actions = math.floor(drill_area / action_sum)
+    if blast_actions >= 1 and draw and length < max_length:
+        length += speed
+    elif length >= max_length:
+        draw = False
+        length = 0
+        drill_area -= blast_actions*action_sum
+        blast_bcm += blast_actions*action_sum
+
+    task_active = pygame.draw.rect(screen, sage, (25, y_coord, 50, 50)) # action button
+    screen.blit(task_image, (27.5, y_coord + 2.5, 45, 45)) # image
+    pygame.draw.rect(screen, sage, (100, y_coord, 400, 50)) # loading bar
+    pygame.draw.rect(screen, navy, (110, y_coord + 10, 380, 30)) # loading bar
+    pygame.draw.rect(screen, orange, (110, y_coord + 10, length, 30))# loading bar progress
+    pygame.draw.rect(screen, sage, (525, y_coord, 50, 50)) # increase button
     return task_active, length, draw
 
 drill_image = image_dict['drill.png']
@@ -146,7 +172,7 @@ while running:
     screen.blit(background_image, (0, 0))
 
     task_drill, drill_length, draw_drill = draw_task(sage, 100, drill_image, draw_drill, drill_length, game_attributes['drill']['speed'], drill_area, game_attributes['drill']['value'])
-    task_blast, blast_length, draw_blast = draw_task(sage, 175, blast_image, draw_blast, blast_length, game_attributes['blast']['speed'], blast_bcm, game_attributes['blast']['value'])
+    task_blast, blast_length, draw_blast = draw_task_blast(175, blast_image, draw_blast, blast_length, None, None, game_attributes['blast']['speed'], None)
     task_dig, dig_length, draw_dig = draw_task(sage, 250, digger_image, draw_dig, dig_length, game_attributes['dig']['speed'], None, None)
     task_dump, dump_length, draw_dump = draw_task(sage, 325, dump_image, draw_dump, dump_length, game_attributes['dump']['speed'], None, None)
 
